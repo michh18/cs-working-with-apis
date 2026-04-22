@@ -7,7 +7,10 @@
             FakerBookResponse? res = await FakerBooks.GetBooksAsync(2);
             if (res != null)
             {
-                Console.WriteLine(res.Data[0].Id);
+                foreach(var book in res.Data)
+                {
+                    Console.WriteLine($"Id: {book.Id} | Title: {book.Title} | Author: {book.Author} | Genre: {book.Genre} \nDescription: {book.Description}");
+                }
             }
         }
     }
