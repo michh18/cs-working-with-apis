@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 
 namespace cs_working_with_apis.SchipholAirportAPI
 {
@@ -15,7 +16,7 @@ namespace cs_working_with_apis.SchipholAirportAPI
         private static readonly string ResourceVersion = "v4";
         private static readonly string Accept = "application/json";
 
-        public static async Task<FlightsResponse?> GetFlightsAsync(string id)
+        public static async Task<FlightsResponse?> GetFlightsAsync(string app_id, string app_key, string id)
         {
             using (HttpClient httpClient = new HttpClient())
             {
@@ -23,9 +24,21 @@ namespace cs_working_with_apis.SchipholAirportAPI
 
                 try
                 {
-                    HttpResponseMessage response = await httpClient.GetAsync(url);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
+                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, url))
+                    {
+                        requestMessage.Headers.Add("ResourceVersion", ResourceVersion);
+                        requestMessage.Headers.Add("Accept", Accept);
+                        requestMessage.Headers.Add("app_id", app_id);
+                        requestMessage.Headers.Add("app_key", app_key);
+                        //await httpClient.SendAsync(requestMessage);
+
+                        HttpResponseMessage response = await httpClient.SendAsync(requestMessage);
+                        response.EnsureSuccessStatusCode();
+                        string responseBody = await response.Content.ReadAsStringAsync();
+
+                        Console.WriteLine(responseBody);
+                    }
+                    
                     //if (!string.IsNullOrEmpty(responseBody))
                     //{
                     //    return JsonSerializer.Deserialize<FlightsResponse>(responseBody);
@@ -35,7 +48,7 @@ namespace cs_working_with_apis.SchipholAirportAPI
                     //    Console.WriteLine("Could not be deserialized");
                     //    return null;
                     //}
-                    Console.WriteLine(responseBody);
+                    
 
                 }
                 catch (HttpRequestException e)
