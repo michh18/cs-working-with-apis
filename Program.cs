@@ -1,4 +1,6 @@
-﻿namespace cs_working_with_apis
+﻿using cs_working_with_apis.FakerBookAPI;
+
+namespace cs_working_with_apis
 {
     internal class Program
     {

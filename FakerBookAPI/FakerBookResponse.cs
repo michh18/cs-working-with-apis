@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace cs_working_with_apis
+namespace cs_working_with_apis.FakerBookAPI
 {
     public class FakerBookResponse
     {
